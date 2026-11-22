@@ -1,0 +1,204 @@
+\documentclass[a4paper,11pt]{moderncv}
+\moderncvstyle[right]{classic}
+\moderncvcolor{blue}
+\usepackage[italian]{babel}
+\usepackage{datetime}
+\usepackage{CormorantGaramond}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[most]{tcolorbox}
+\usepackage{etoolbox}
+\usepackage{comment}
+\usepackage{lipsum}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{footmisc}
+\usepackage{microtype}
+\usepackage[scale=0.91]{geometry}
+
+\newcommand*{\capitalizedmonthname}[1][\month]{%
+  \ifcase#1\relax
+    \or Gennaio\or Febbraio\or Marzo\or Aprile
+    \or Maggio\or Giugno\or Luglio\or Agosto
+    \or Settembre\or Ottobre\or Novembre\or Dicembre
+  \fi
+}
+\newdateformat{capitalizedmonthyear}{\capitalizedmonthname[\THEMONTH]~\THEYEAR}
+
+\recomputelengths
+
+% tcolorbox settings for header, see https://tex.stackexchange.com/a/568900
+\tcbset{enhanced, on line, 
+        boxsep=4pt, left=0pt,right=0pt,top=0pt,bottom=0pt,
+        colframe=white, %colback=color1 %background color. solid. 
+		interior style={left color=color1!80!black, right color=white!90!color1} %gradient.
+        }
+
+\renewcommand*{\namefont}{\fontsize{24.88}{20}\mdseries\upshape} %smaller name
+\renewcommand*{\titlefont}{\fontsize{14}{20}\upshape} %smaller title
+\renewcommand*{\addresssymbol}{\faMapMarker*\ }
+
+% footnote without mark. See https://tex.stackexchange.com/questions/30720/footnote-without-a-marker
+\makeatletter
+\def\blfootnote{\xdef\@thefnmark{}\@footnotetext}
+\makeatother
+
+% new environment to make cvitem/cvline compatible with minipage
+% (otherwise their width is set regardless of the actual page width)
+% see this answer in stack https://tex.stackexchange.com/a/325630
+
+\newenvironment{minicv}[2][60.37605pt]%
+ {\begin{minipage}[t]{#2}%
+  \maincolumnwidth=#2%
+  \hintscolumnwidth=#1%
+  \advance\maincolumnwidth-\hintscolumnwidth
+  \advance\maincolumnwidth-\separatorcolumnwidth
+ }%
+ {\end{minipage}%
+ }
+
+\usepackage{xpatch} % fixes an alignment issue between two columns of minicv. see ibidem
+\xpatchcmd{\cvitem}{\begin{tabular}}{\begin{tabular}[t]}{}{}
+
+% trying to customize sections header, as adapted from https://tex.stackexchange.com/questions/85158/customizing-moderncv-section-title-style
+
+\makeatletter
+\renewcommand*{\sectionstyle}[1]{\tcbox{%
+  \parbox[t]{\dimexpr\textwidth-2\fboxsep\relax}{\sectionfont\textcolor{white}{#1}}}}
+\renewcommand*{\section}[1]{%
+  \par\addvspace{2.5ex}%
+  \phantomsection{}% reset the anchor for hyperrefs
+  \addcontentsline{toc}{section}{#1}%
+  \strut\sectionstyle{#1}%
+  \par\nobreak\addvspace{1ex}\@afterheading}
+\makeatother
+
+\setlength{\hintscolumnwidth}{2.8cm} %adjust length of the left column
+
+% Personal contact details are kept in the ignored local file personal.tex.
+\newcommand{\CVaddress}{}
+\newcommand{\CVemail}{}
+\newcommand{\CVpropic}{}
+\newcommand{\CVsignature}{}
+\InputIfFileExists{personal.tex}{}{}
+
+\firstname{Giorgio}
+\familyname{Musante}
+\title{Data Engineer | PhD in Matematica}
+\address{\CVaddress}
+\email{\CVemail}
+\ifdefempty{\CVpropic}{}{%
+  \IfFileExists{\CVpropic}{%
+    \photo[4.6cm][0pt]{\CVpropic}%
+  }{%
+    \PackageError{CV}{Photo file `\CVpropic' not found}{Check the path in personal.tex.}%
+  }%
+}
+%\social[github]{giorgiomusante}
+\social[linkedin]{giorgio-musante-249937381}
+
+%************************************** added <<<<<<<<<<<<<<<   
+\makeatletter
+\usepackage{xpatch}
+\xpatchcmd{\makecvhead}
+{\includegraphics[width=\@photowidth]{\@photo}}
+{\begin{tikzpicture}\clip (0,0) circle (1.55cm);\node at (-0.1,-0.24) {\includegraphics[width=\@photowidth]{\@photo}};\end{tikzpicture}}
+{}{}
+\makeatother
+%************************************** 
+
+\frenchspacing
+
+\nopagenumbers{}
+
+\begin{document}
+	\maketitle
+	
+	\vspace{-8mm}
+	\section{Profilo}
+	Data Engineer con esperienza nella progettazione e nello sviluppo di pipeline ETL, 
+	processi di trasformazione e modelli dati utilizzando tecnologie come Snowflake e dbt. 
+	Competenze nell'integrazione di dati provenienti da sistemi aziendali e nella realizzazione 
+	di soluzioni a supporto della reportistica e della Business Intelligence. 
+	Dottorato di ricerca in Matematica e formazione in Fisica, 
+	con solide capacità analitiche, rigore metodologico e 
+	approccio strutturato alla risoluzione di problemi complessi.
+
+	\section{Esperienze lavorative}
+	\cventry{2026-01 -- \textit{Oggi}}{Data Engineer - Junior Consultant}{SDG Group Italia}{Milano.}{}
+	{Sviluppo di soluzioni di Data Engineering per clienti enterprise in ambito Food \& Beverage e Healthcare.
+	\begin{itemize}
+		\item Raccolta, analisi e interpretazione dei requisiti di business attraverso il 
+		confronto con gli stakeholder, traducendo le esigenze del cliente in specifiche funzionali e soluzioni tecniche di Data Engineering.
+		\item Progettazione, implementazione e manutenzione di pipeline ELT per l'integrazione e la trasformazione dei dati, 
+		con utilizzo di strumenti come dbt, Snowflake e SAP Data Services, .
+		\item Progettazione e sviluppo di modelli dati su Snowflake a supporto della reportistica e delle esigenze di BI,
+		con utilizzo di strumenti AI-assisted per lo sviluppo come Snowflake Cortex Code.
+	\end{itemize}}
+
+	\section{Istruzione e formazione}
+	\cventry{2020 -- 2024}{PhD in Matematica e Applicazioni}{Università di Genova.}{}
+	{}{\small  Tesi: ``Green hyperbolic complexes on Lorentzian manifolds and quantizations
+	of gauge field theories''. %\\
+	%Ricerca in fisica matematica (teoria delle categorie, QFT). 
+	%Esperienza in lavoro di gruppo, pubblicazione in riviste peer reviewed, 
+	%comunicazione scientifica in contesto internazionale.
+	}
+	
+	\cventry{2018 -- 2020}{Laurea Magistrale in Scienze Fisiche}{Università di Pavia}{}{110/110 e Lode.}
+	{\small Tesi: ``On the complex of observables for linearized gravity''. %\\ 
+	%Competenza in fisica teorica e matematica, con interesse particolare 
+	%nell’approccio matematico rigoroso.
+	}
+	
+	\cventry{2015 -- 2018}{Laurea Triennale in Fisica}{Università di Pavia}{}{110/110 e Lode.}
+	{\small Tesi: ``Un approccio algebrico alla condensazione di Bose-Einstein''.}	
+
+	\cventry{2010 -- 2015}{Diploma Scientifico}{Liceo Scientifico B. Cairoli}{Vigevano (PV).}{}{}
+		
+	\section{Competenze tecniche}
+		\begingroup % locally adjusting width of the left column for this section
+		\setlength{\hintscolumnwidth}{5.8cm} 
+		\recomputecvbodylengths
+		\cvitem{Data Engineering e Data Warehousing:}{dbt, Snowflake, Snowflake Cortex Code.}
+		\cvitem{Database e Linguaggi:}{SQL. Conoscenza di base di Python (pandas) e  C++.}
+		\cvitem{Ecosistema SAP e Integrazione dati:}{SAP Data Services, SAP CDS Views, SAP Logon, Eclipse.}
+		\cvitem{Version control:}{Git, Github.}
+		\cvitem{Strumenti di Produttività:}{Suite Microsoft (Excel, Word, PowerPoint), Google Workspace (Sheets, Docs, Slides).}
+		\cvitem{Altre competenze:}{LaTeX, Markdown.}
+		\endgroup
+	\section{Capacità relazionali}
+		\begingroup % locally adjusting width of the left column for this section
+		\setlength{\hintscolumnwidth}{1.3cm} 
+		\recomputecvbodylengths
+		\cvitem{\textcolor{color1}{\(\bullet\)}}{Teamwork e collaborazione in gruppi di lavoro multidisciplinari e ambienti internazionali.}
+		\cvitem{\textcolor{color1}{\(\bullet\)}}{Comunicazione efficace e capacità di interfacciarsi con interlocutori tecnici e stakeholder di business.}
+		%\cvitem{\textcolor{color1}{\(\bullet\)}}{Capacità di raccogliere, comprendere e interpretare esigenze e requisiti, traducendoli in obiettivi operativi.}
+		\cvitem{\textcolor{color1}{\(\bullet\)}}{Autonomia nell'organizzazione delle attività e nella gestione delle priorità e delle scadenze.}
+		\cvitem{\textcolor{color1}{\(\bullet\)}}{Flessibilità e rapidità nell'apprendimento di nuove tecnologie e strumenti.}
+		\cvitem{\textcolor{color1}{\(\bullet\)}}{Problem finding e problem solving, con approccio analitico e strutturato.}
+		\endgroup
+	\section{Lingue}
+		\cvlanguage{Italiano}{Madrelingua}{}
+		\cvlanguage{Inglese}{C1}{(Avanzato, scritto e parlato)}
+	
+	\vfill
+	\enlargethispage{\footskip}
+	\blfootnote{{\small Autorizzo il trattamento dei dati personali contenuti nel mio curriculum vitae in base all'art. 13 del D.lgs 196/2003 e art. 13 GDPR (Regolamento UE 2016/679) ai soli fini della ricerca e selezione del personale.}}
+	
+	\ifdefempty{\CVsignature}{}{%
+		\IfFileExists{\CVsignature}{%
+			\vspace*{1cm}
+			\includegraphics[height=4cm]{\CVsignature}
+			
+			\hspace*{0.5cm}
+			\parbox{5cm}{Giorgio Musante,\\
+			\capitalizedmonthyear\today}
+
+			\vspace*{0.5cm}
+		}{%
+			\PackageError{CV}{Signature file `\CVsignature' not found}{Check the path in personal.tex.}%
+		}%
+	}
+	
+\end{document}

@@ -1,0 +1,14 @@
+# ignored files
+*.aux
+*.log
+*.out
+*.pdf
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+.DS_Store
+personal.tex
+pictures/*
+
+#exceptions
+!pictures/.gitkeep
